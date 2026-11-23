@@ -53,6 +53,15 @@ a{color:#EBE7D7}a:hover{color:#CDB787}
 details summary{cursor:pointer;list-style:none}details summary::-webkit-details-marker{display:none}
 </style>
 <style>
+.mg-credit{display:block;width:100%;min-width:0;max-width:100%;margin:0;padding:0;background:transparent}
+.mg-credit .mg-credit__in{box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 24px;width:100%;margin:0;padding:14px 0;color:var(--mg-credit-ink,currentColor);font-family:inherit;font-size:13px;font-weight:400;font-style:normal;line-height:1.6;letter-spacing:normal;text-transform:none;text-align:center;direction:rtl}
+.mg-credit .mg-credit__item{display:inline-flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;min-width:0;max-width:100%;margin:0;padding:0;border:0;background:none;box-shadow:none;color:inherit!important;font:inherit;text-decoration:none!important;overflow-wrap:anywhere}
+.mg-credit .mg-credit__name{font-weight:600}
+.mg-credit .mg-credit__logo{display:block;flex:0 0 auto;width:auto!important;height:21px!important;max-width:35px!important;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;object-fit:contain}
+.mg-credit .mg-credit__item:hover{text-decoration:underline!important;text-underline-offset:3px}
+.mg-credit .mg-credit__item:focus-visible{outline:2px solid currentColor;outline-offset:4px;border-radius:3px}
+@media (max-width:600px){.mg-credit .mg-credit__in{flex-direction:column;gap:10px}}
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 img{max-width:100%}
@@ -128,7 +137,13 @@ img{max-width:100%}
         <span>© משק רם. כל הזכויות שמורות.</span><span>הצהרת נגישות · תקנון</span>
       </div>
     </div>
-  </footer>
+  <div class="mg-credit" dir="rtl" style="max-width: 1360px; margin: 8px auto 0; border-top: 1px solid rgba(23,47,27,.35)">
+  <div class="mg-credit__in" role="group" aria-label="פיתוח וקידום האתר">
+    <a class="mg-credit__item" href="https://mediagroup.co.il/" target="_blank" rel="noopener"><span class="mg-credit__name" dir="ltr">Media Group</span> <span>קידום אתרים ב־Google ובמנועי בינה מלאכותית</span></a>
+    <a class="mg-credit__item" href="https://aidevelopments.co.il/" target="_blank" rel="noopener"><img class="mg-credit__logo" src="/assets/aidev.png" alt="AI Development" width="65" height="63" loading="lazy" decoding="async"> <span>פיתוח מערכות AI</span></a>
+  </div>
+</div>
+</footer>
 </div>
 </body>
 </html>
