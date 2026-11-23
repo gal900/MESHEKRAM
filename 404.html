@@ -18,34 +18,90 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&amp;family=Gveret+Levin&amp;display=swap" rel="stylesheet">
 <style>
-body{margin:0;background:#172F1B}
-a{color:#EBE7D7}a:hover{color:#CDB787}
-.craft{background-image:url(/assets/craft.jpg);background-size:cover;background-position:center}
+body{margin:0;background:#EBE7D7}
+:root{
+  --stone:#EBE7D7;--stone-2:#E2DDCA;--forest:#638C55;--deep:#172F1B;--ink-2:#2E4A31;--craft:#CDB787;
+  --ease-out:cubic-bezier(0.23,1,0.32,1);--ease-in-out:cubic-bezier(0.77,0,0.175,1);
+}
+a{color:#172F1B;text-underline-offset:.22em;text-decoration-thickness:1.5px}
+a:hover{color:#172F1B}
+::selection{background:#172F1B;color:#EBE7D7}
+html{scrollbar-color:#638C55 #E2DDCA;caret-color:#638C55}
+:focus-visible{outline:2px solid #172F1B;outline-offset:3px;border-radius:2px}
+.on-deep :focus-visible{outline-color:#EBE7D7}
+
+/* Masks for brand drawings */
 .mk{-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center}
-.cream{background:#EBE7D7}.forest{background:#638C55}.deep{background:#172F1B}
 .m-logo{-webkit-mask-image:url(/assets/logo.png);mask-image:url(/assets/logo.png)}
 .m-tag{-webkit-mask-image:url(/assets/tagline.png);mask-image:url(/assets/tagline.png)}
 .m-baguette{-webkit-mask-image:url(/assets/baguette.png);mask-image:url(/assets/baguette.png)}
 .m-bottle{-webkit-mask-image:url(/assets/bottle.png);mask-image:url(/assets/bottle.png)}
 .m-cheese{-webkit-mask-image:url(/assets/cheese.png);mask-image:url(/assets/cheese.png)}
 .m-coffee{-webkit-mask-image:url(/assets/coffee.png);mask-image:url(/assets/coffee.png)}
-.m-herb{-webkit-mask-image:url(/assets/herb.png);mask-image:url(/assets/herb.png)}
 .m-honey{-webkit-mask-image:url(/assets/honey.png);mask-image:url(/assets/honey.png)}
 .m-jar{-webkit-mask-image:url(/assets/jar.png);mask-image:url(/assets/jar.png)}
 .m-lemon{-webkit-mask-image:url(/assets/lemon.png);mask-image:url(/assets/lemon.png)}
 .m-sandwich{-webkit-mask-image:url(/assets/sandwich.png);mask-image:url(/assets/sandwich.png)}
 .m-scoop{-webkit-mask-image:url(/assets/scoop.png);mask-image:url(/assets/scoop.png)}
-.nav a{color:#EBE7D7;text-decoration:none;opacity:.9}
-.nav a:hover{opacity:1;color:#CDB787}
-.nav a[aria-current="page"]{color:#CDB787;opacity:1;border-bottom:2px solid #CDB787;padding-bottom:4px}
-.btn-cream{background:#EBE7D7;color:#172F1B;text-decoration:none}
-.btn-cream:hover{background:#CDB787;color:#172F1B}
-.btn-deep{background:#172F1B;color:#EBE7D7;text-decoration:none}
-.btn-deep:hover{background:#638C55;color:#fff}
-.tile{position:relative;overflow:hidden;display:block;text-decoration:none}
-.tile img{transition:transform .6s ease}
-.tile:hover img{transform:scale(1.05)}
-.darklink{color:#172F1B}.darklink:hover{color:#638C55}
+
+/* One button style: steps on hover, presses on click */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;font-weight:700;font-size:17px;text-decoration:none;background:#172F1B;color:#EBE7D7;transition:transform 160ms var(--ease-out),background-color 200ms ease}
+.btn:active{transform:scale(0.97)}
+.btn.alt{background:transparent;color:#172F1B;box-shadow:inset 0 0 0 1.5px #172F1B}
+.on-deep .btn{background:#EBE7D7;color:#172F1B}
+.on-deep .btn.alt{background:transparent;color:#EBE7D7;box-shadow:inset 0 0 0 1.5px #EBE7D7}
+
+/* Nav underline draws from the start edge (right in RTL) */
+.nav a{position:relative;text-decoration:none;color:#172F1B;padding:6px 0}
+.nav a::after{content:"";position:absolute;inset:auto 0 0 0;height:1.5px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform 250ms var(--ease-out)}
+.nav a[aria-current="page"]::after{transform:scaleX(1)}
+
+/* Photo frames: zoom 1.03 inside the frame */
+.frame{overflow:hidden;border-radius:6px;background:#E2DDCA}
+.frame img{display:block;width:100%;height:100%;object-fit:cover;transition:transform 500ms var(--ease-out)}
+.lift{transition:transform 250ms var(--ease-out)}
+
+/* Departments: photo swap with a blur crossfade */
+.dep-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;filter:blur(6px);transform:scale(1.02);transition:opacity 320ms ease,filter 320ms ease,transform 600ms var(--ease-out)}
+.dep-photo.is-on{opacity:1;filter:blur(0);transform:scale(1)}
+.dep-row{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:16px;padding:22px 0;border-top:1.5px solid rgba(23,47,27,.22);text-decoration:none;color:#172F1B}
+.dep-name{position:relative;font-size:clamp(28px,3vw,40px);font-weight:800;line-height:1.1}
+.dep-name::after{content:"";position:absolute;inset:auto 0 -6px 0;height:2px;background:#172F1B;transform:scaleX(0);transform-origin:right;transition:transform 250ms var(--ease-out)}
+.dep-row.is-on .dep-name::after{transform:scaleX(1)}
+.dep-arrow{font-size:24px;transition:transform 200ms var(--ease-out),opacity 200ms ease;opacity:.35}
+.dep-row.is-on .dep-arrow{opacity:1;transform:translateX(-6px)}
+
+@media (hover:hover) and (pointer:fine){
+  .btn:hover{background:#2E4A31}
+  .btn.alt:hover{background:#172F1B;color:#EBE7D7}
+  .on-deep .btn:hover{background:#CDB787}
+  .on-deep .btn.alt:hover{background:#EBE7D7;color:#172F1B}
+  .nav a:hover::after{transform:scaleX(1)}
+  .frame:hover img{transform:scale(1.03)}
+  a.lift:hover{transform:translateY(-2px)}
+}
+
+/* Hero enters once, staggered (non-uniform delays) */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes unveil{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+@media (prefers-reduced-motion:no-preference){
+  .enter{animation:rise 700ms var(--ease-out) both}
+  .enter.d1{animation-delay:60ms}.enter.d2{animation-delay:130ms}.enter.d3{animation-delay:220ms}.enter.d4{animation-delay:300ms}
+  .hero-photo{animation:unveil 1100ms var(--ease-in-out) 120ms both}
+  /* Scroll moments: photos unveil as they enter (scroll-driven, no JS) */
+  @supports (animation-timeline: view()){
+    .reveal{animation:unveil linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .dep-photo{transition:opacity 200ms ease;filter:none;transform:none}
+}
+@media (max-width:820px){
+  .hero-grid,.split{grid-template-columns:1fr !important}
+  .nav{display:none !important}
+  .hero-photo-wrap{min-height:420px !important}
+  .moment-word{font-size:22vw !important}
+}
 </style>
 <style>
 *{box-sizing:border-box}
@@ -63,16 +119,15 @@ img{max-width:100%}
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "GroceryStore", "name": "משק רם", "description": "משק רם – משק משפחתי ברמת הגולן: חנות ושוק איכרים קהילתי עם תוצרת חקלאית מקומית, יצרני בוטיק, מעדניית גבינות, טאבון, קפה, מיצים וגלידה.", "url": "https://meshekram.vercel.app/", "logo": "https://meshekram.vercel.app/assets/logo.png", "image": "https://meshekram.vercel.app/assets/store.jpg", "address": {"@type": "PostalAddress", "addressRegion": "רמת הגולן", "addressCountry": "IL"}}</script>
 </head>
 <body>
-<div style="font-family: Heebo, sans-serif; color: #EBE7D7; background: #172F1B; min-height: 100vh; direction: rtl">
+<div style="font-family: Heebo, sans-serif; color: #172F1B; background: #EBE7D7; direction: rtl; min-height: 100vh">
 
   <!-- Header -->
   <a class="skip" href="#main">דילוג לתוכן</a>
-<header style="max-width: 1360px; margin: 0 auto; padding: 22px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap">
-    <a href="#top" aria-label="משק רם – לעמוד הבית" style="display: block">
-      <span class="mk m-logo cream" role="img" aria-label="משק רם" style="display: block; width: 150px; height: 48px"></span>
+<header style="max-width: 1280px; margin: 0 auto; padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
+    <a href="/" aria-label="משק רם – לעמוד הבית" style="display: block">
+      <span class="mk m-logo" role="img" aria-label="משק רם" style="display: block; width: 136px; height: 44px; background: #172F1B"></span>
     </a>
-    <nav class="nav" aria-label="ניווט ראשי" style="display: flex; gap: 26px; flex-wrap: wrap; font-size: 16px; font-weight: 400">
-      <a href="/" aria-current="page">עמוד הבית</a>
+    <nav class="nav" aria-label="ניווט ראשי" style="display: flex; gap: 28px; font-size: 16px; font-weight: 500">
       <a href="/about/">אודות</a>
       <a href="/our-story/">סיפור החנות</a>
       <a href="/friends/">החברים של המשק</a>
@@ -80,34 +135,42 @@ img{max-width:100%}
       <a href="/visitor-center/">חנות ומרכז מבקרים</a>
       <a href="/contact/">צור קשר</a>
     </nav>
+    <a href="/visitor-center/" class="btn" style="min-height: 44px; padding: 0 22px; font-size: 15px">לנווט אל המשק</a>
   </header>
 <main id="main"><section style="max-width: 900px; margin: 0 auto; padding: 120px 32px; text-align: center; display: flex; flex-direction: column; gap: 22px; align-items: center"><span style="font-family: 'Gveret Levin', cursive; font-size: 34px; color: #638C55">אופס</span><h1 style="margin: 0; font-size: 56px; font-weight: 900">הדף לא נמצא</h1><p style="margin: 0; font-size: 20px; font-weight: 300">יכול להיות שהכתובת השתנתה. בואו נחזור לשוק.</p><a href="/" class="btn-cream" style="padding: 16px 32px; font-weight: 700; border-radius: 4px">לעמוד הבית</a></section></main>
-<footer id="contact" class="forest" style="color: #172F1B; padding: 72px 32px 36px">
-    <div style="max-width: 1360px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px">
-        <div style="display: flex; flex-direction: column; gap: 16px">
-          <span class="mk m-logo deep" role="img" aria-label="משק רם" style="display: block; width: 200px; height: 64px; -webkit-mask-position: right center; mask-position: right center"></span>
-          <span class="mk m-tag deep" role="img" aria-label="חנות. שוק איכרים קהילתי מקומי." style="display: block; width: 240px; height: 30px; -webkit-mask-position: right center; mask-position: right center"></span>
+<footer id="contact" class="on-deep" style="background: #172F1B; color: #EBE7D7">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 88px 40px 36px; display: flex; flex-direction: column; gap: 56px">
+      <div class="split" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: end">
+        <div style="display: flex; flex-direction: column; gap: 18px">
+          <span class="mk m-logo" role="img" aria-label="משק רם" style="display: block; width: 240px; height: 78px; background: #EBE7D7; -webkit-mask-position: right center; mask-position: right center"></span>
+          <p style="margin: 0; font-size: 19px; line-height: 1.6; color: #D9D5C3; max-width: 38ch">מה חדש על הדוכנים, אירועים וסדנאות. מייל אחד בשבוע, בלי הצפות.</p>
         </div>
-        <nav aria-label="ניווט תחתון" style="display: flex; flex-direction: column; gap: 10px; font-size: 16px">
-          <strong style="font-size: 17px">ניווט</strong>
-          <a class="darklink" href="/about/">אודות</a><a class="darklink" href="/our-story/">סיפור החנות</a><a class="darklink" href="/friends/">החברים של המשק</a><a class="darklink" href="/departments/">מחלקות ומוצרים</a><a class="darklink" href="/visitor-center/">חנות ומרכז מבקרים</a><a class="darklink" href="/contact/">צור קשר</a>
-        </nav>
-        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 16px">
-          <strong style="font-size: 17px">צור קשר</strong>
-          <span>[טלפון]</span><span>[אימייל]</span><span>[כתובת], רמת הגולן</span><span>אינסטגרם: [@meshek_ram]</span>
-        </div>
-        <form style="display: flex; flex-direction: column; gap: 10px">
-          <label for="b-mail" style="font-weight: 700; font-size: 17px">מה חדש במשק? הצטרפו לעדכונים</label>
-          <input id="b-mail" type="email" placeholder="כתובת אימייל" style="font-family: inherit; font-size: 16px; padding: 13px 16px; border: 1.5px solid #172F1B; background: #EBE7D7; border-radius: 4px; color: #172F1B">
-          <button type="button" class="btn-deep" style="font-family: inherit; font-size: 16px; font-weight: 700; padding: 13px; border: 0; border-radius: 4px; cursor: pointer">הרשמה</button>
+        <form style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end">
+          <label style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; font-weight: 700">כתובת אימייל<input type="email" autocomplete="email" style="font-family: inherit; font-size: 17px; padding: 0 18px; min-height: 52px; border: 1.5px solid #EBE7D7; background: transparent; color: #EBE7D7; border-radius: 999px"></label>
+          <button type="button" class="btn" style="border: 0; font-family: inherit; cursor: pointer">להצטרף לעדכונים</button>
         </form>
       </div>
-      <div style="border-top: 1px solid rgba(23,47,27,.35); padding-top: 20px; font-size: 14px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap">
-        <span>© משק רם. כל הזכויות שמורות.</span><span>הצהרת נגישות · תקנון</span>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; border-top: 1px solid rgba(235,231,215,.2); padding-top: 32px; font-size: 16px">
+        <nav aria-label="ניווט תחתון" style="display: flex; flex-direction: column; gap: 10px">
+          <a href="/about/" style="color: #EBE7D7">אודות</a><a href="/our-story/" style="color: #EBE7D7">סיפור החנות</a><a href="/friends/" style="color: #EBE7D7">החברים של המשק</a>
+        </nav>
+        <nav aria-label="עוד" style="display: flex; flex-direction: column; gap: 10px">
+          <a href="/departments/" style="color: #EBE7D7">מחלקות ומוצרים</a><a href="/visitor-center/" style="color: #EBE7D7">חנות ומרכז מבקרים</a><a href="/contact/" style="color: #EBE7D7">צור קשר</a>
+        </nav>
+        <div style="display: flex; flex-direction: column; gap: 10px; color: #D9D5C3">
+          <span>רמת הגולן</span><span>[טלפון]</span><span>[אימייל]</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; color: #D9D5C3">
+          <span>© משק רם</span><span>הצהרת נגישות</span>
+        </div>
       </div>
     </div>
   </footer>
 </div>
+<script>
+(function(){var rows=document.querySelectorAll('.dep-row'),imgs=document.querySelectorAll('.dep-photo');
+function on(i){rows.forEach(function(r){r.classList.toggle('is-on',r.dataset.i==i)});imgs.forEach(function(m){m.classList.toggle('is-on',m.dataset.i==i)})}
+rows.forEach(function(r){r.addEventListener('mouseenter',function(){on(r.dataset.i)});r.addEventListener('focus',function(){on(r.dataset.i)})});})();
+</script>
 </body>
 </html>

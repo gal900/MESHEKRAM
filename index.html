@@ -18,34 +18,90 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&amp;family=Gveret+Levin&amp;display=swap" rel="stylesheet">
 <style>
-body{margin:0;background:#172F1B}
-a{color:#EBE7D7}a:hover{color:#CDB787}
-.craft{background-image:url(/assets/craft.jpg);background-size:cover;background-position:center}
+body{margin:0;background:#EBE7D7}
+:root{
+  --stone:#EBE7D7;--stone-2:#E2DDCA;--forest:#638C55;--deep:#172F1B;--ink-2:#2E4A31;--craft:#CDB787;
+  --ease-out:cubic-bezier(0.23,1,0.32,1);--ease-in-out:cubic-bezier(0.77,0,0.175,1);
+}
+a{color:#172F1B;text-underline-offset:.22em;text-decoration-thickness:1.5px}
+a:hover{color:#172F1B}
+::selection{background:#172F1B;color:#EBE7D7}
+html{scrollbar-color:#638C55 #E2DDCA;caret-color:#638C55}
+:focus-visible{outline:2px solid #172F1B;outline-offset:3px;border-radius:2px}
+.on-deep :focus-visible{outline-color:#EBE7D7}
+
+/* Masks for brand drawings */
 .mk{-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center}
-.cream{background:#EBE7D7}.forest{background:#638C55}.deep{background:#172F1B}
 .m-logo{-webkit-mask-image:url(/assets/logo.png);mask-image:url(/assets/logo.png)}
 .m-tag{-webkit-mask-image:url(/assets/tagline.png);mask-image:url(/assets/tagline.png)}
 .m-baguette{-webkit-mask-image:url(/assets/baguette.png);mask-image:url(/assets/baguette.png)}
 .m-bottle{-webkit-mask-image:url(/assets/bottle.png);mask-image:url(/assets/bottle.png)}
 .m-cheese{-webkit-mask-image:url(/assets/cheese.png);mask-image:url(/assets/cheese.png)}
 .m-coffee{-webkit-mask-image:url(/assets/coffee.png);mask-image:url(/assets/coffee.png)}
-.m-herb{-webkit-mask-image:url(/assets/herb.png);mask-image:url(/assets/herb.png)}
 .m-honey{-webkit-mask-image:url(/assets/honey.png);mask-image:url(/assets/honey.png)}
 .m-jar{-webkit-mask-image:url(/assets/jar.png);mask-image:url(/assets/jar.png)}
 .m-lemon{-webkit-mask-image:url(/assets/lemon.png);mask-image:url(/assets/lemon.png)}
 .m-sandwich{-webkit-mask-image:url(/assets/sandwich.png);mask-image:url(/assets/sandwich.png)}
 .m-scoop{-webkit-mask-image:url(/assets/scoop.png);mask-image:url(/assets/scoop.png)}
-.nav a{color:#EBE7D7;text-decoration:none;opacity:.9}
-.nav a:hover{opacity:1;color:#CDB787}
-.nav a[aria-current="page"]{color:#CDB787;opacity:1;border-bottom:2px solid #CDB787;padding-bottom:4px}
-.btn-cream{background:#EBE7D7;color:#172F1B;text-decoration:none}
-.btn-cream:hover{background:#CDB787;color:#172F1B}
-.btn-deep{background:#172F1B;color:#EBE7D7;text-decoration:none}
-.btn-deep:hover{background:#638C55;color:#fff}
-.tile{position:relative;overflow:hidden;display:block;text-decoration:none}
-.tile img{transition:transform .6s ease}
-.tile:hover img{transform:scale(1.05)}
-.darklink{color:#172F1B}.darklink:hover{color:#638C55}
+
+/* One button style: steps on hover, presses on click */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:999px;font-weight:700;font-size:17px;text-decoration:none;background:#172F1B;color:#EBE7D7;transition:transform 160ms var(--ease-out),background-color 200ms ease}
+.btn:active{transform:scale(0.97)}
+.btn.alt{background:transparent;color:#172F1B;box-shadow:inset 0 0 0 1.5px #172F1B}
+.on-deep .btn{background:#EBE7D7;color:#172F1B}
+.on-deep .btn.alt{background:transparent;color:#EBE7D7;box-shadow:inset 0 0 0 1.5px #EBE7D7}
+
+/* Nav underline draws from the start edge (right in RTL) */
+.nav a{position:relative;text-decoration:none;color:#172F1B;padding:6px 0}
+.nav a::after{content:"";position:absolute;inset:auto 0 0 0;height:1.5px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform 250ms var(--ease-out)}
+.nav a[aria-current="page"]::after{transform:scaleX(1)}
+
+/* Photo frames: zoom 1.03 inside the frame */
+.frame{overflow:hidden;border-radius:6px;background:#E2DDCA}
+.frame img{display:block;width:100%;height:100%;object-fit:cover;transition:transform 500ms var(--ease-out)}
+.lift{transition:transform 250ms var(--ease-out)}
+
+/* Departments: photo swap with a blur crossfade */
+.dep-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;filter:blur(6px);transform:scale(1.02);transition:opacity 320ms ease,filter 320ms ease,transform 600ms var(--ease-out)}
+.dep-photo.is-on{opacity:1;filter:blur(0);transform:scale(1)}
+.dep-row{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:16px;padding:22px 0;border-top:1.5px solid rgba(23,47,27,.22);text-decoration:none;color:#172F1B}
+.dep-name{position:relative;font-size:clamp(28px,3vw,40px);font-weight:800;line-height:1.1}
+.dep-name::after{content:"";position:absolute;inset:auto 0 -6px 0;height:2px;background:#172F1B;transform:scaleX(0);transform-origin:right;transition:transform 250ms var(--ease-out)}
+.dep-row.is-on .dep-name::after{transform:scaleX(1)}
+.dep-arrow{font-size:24px;transition:transform 200ms var(--ease-out),opacity 200ms ease;opacity:.35}
+.dep-row.is-on .dep-arrow{opacity:1;transform:translateX(-6px)}
+
+@media (hover:hover) and (pointer:fine){
+  .btn:hover{background:#2E4A31}
+  .btn.alt:hover{background:#172F1B;color:#EBE7D7}
+  .on-deep .btn:hover{background:#CDB787}
+  .on-deep .btn.alt:hover{background:#EBE7D7;color:#172F1B}
+  .nav a:hover::after{transform:scaleX(1)}
+  .frame:hover img{transform:scale(1.03)}
+  a.lift:hover{transform:translateY(-2px)}
+}
+
+/* Hero enters once, staggered (non-uniform delays) */
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes unveil{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0 0 0 0)}}
+@media (prefers-reduced-motion:no-preference){
+  .enter{animation:rise 700ms var(--ease-out) both}
+  .enter.d1{animation-delay:60ms}.enter.d2{animation-delay:130ms}.enter.d3{animation-delay:220ms}.enter.d4{animation-delay:300ms}
+  .hero-photo{animation:unveil 1100ms var(--ease-in-out) 120ms both}
+  /* Scroll moments: photos unveil as they enter (scroll-driven, no JS) */
+  @supports (animation-timeline: view()){
+    .reveal{animation:unveil linear both;animation-timeline:view();animation-range:entry 0% entry 70%}
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .dep-photo{transition:opacity 200ms ease;filter:none;transform:none}
+}
+@media (max-width:820px){
+  .hero-grid,.split{grid-template-columns:1fr !important}
+  .nav{display:none !important}
+  .hero-photo-wrap{min-height:420px !important}
+  .moment-word{font-size:22vw !important}
+}
 </style>
 <style>
 *{box-sizing:border-box}
@@ -63,16 +119,15 @@ img{max-width:100%}
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "GroceryStore", "name": "משק רם", "description": "משק רם – משק משפחתי ברמת הגולן: חנות ושוק איכרים קהילתי עם תוצרת חקלאית מקומית, יצרני בוטיק, מעדניית גבינות, טאבון, קפה, מיצים וגלידה.", "url": "https://meshekram.vercel.app/", "logo": "https://meshekram.vercel.app/assets/logo.png", "image": "https://meshekram.vercel.app/assets/store.jpg", "address": {"@type": "PostalAddress", "addressRegion": "רמת הגולן", "addressCountry": "IL"}}</script>
 </head>
 <body>
-<div style="font-family: Heebo, sans-serif; color: #EBE7D7; background: #172F1B; min-height: 100vh; direction: rtl">
+<div style="font-family: Heebo, sans-serif; color: #172F1B; background: #EBE7D7; direction: rtl; min-height: 100vh">
 
   <!-- Header -->
   <a class="skip" href="#main">דילוג לתוכן</a>
-<header style="max-width: 1360px; margin: 0 auto; padding: 22px 32px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap">
-    <a href="#top" aria-label="משק רם – לעמוד הבית" style="display: block">
-      <span class="mk m-logo cream" role="img" aria-label="משק רם" style="display: block; width: 150px; height: 48px"></span>
+<header style="max-width: 1280px; margin: 0 auto; padding: 22px 40px; display: flex; align-items: center; justify-content: space-between; gap: 24px">
+    <a href="/" aria-label="משק רם – לעמוד הבית" style="display: block">
+      <span class="mk m-logo" role="img" aria-label="משק רם" style="display: block; width: 136px; height: 44px; background: #172F1B"></span>
     </a>
-    <nav class="nav" aria-label="ניווט ראשי" style="display: flex; gap: 26px; flex-wrap: wrap; font-size: 16px; font-weight: 400">
-      <a href="/" aria-current="page">עמוד הבית</a>
+    <nav class="nav" aria-label="ניווט ראשי" style="display: flex; gap: 28px; font-size: 16px; font-weight: 500">
       <a href="/about/">אודות</a>
       <a href="/our-story/">סיפור החנות</a>
       <a href="/friends/">החברים של המשק</a>
@@ -80,173 +135,166 @@ img{max-width:100%}
       <a href="/visitor-center/">חנות ומרכז מבקרים</a>
       <a href="/contact/">צור קשר</a>
     </nav>
+    <a href="/visitor-center/" class="btn" style="min-height: 44px; padding: 0 22px; font-size: 15px">לנווט אל המשק</a>
   </header>
 <main id="main">
 
-  <!-- Hero -->
-  <section id="top" style="max-width: 1360px; margin: 0 auto; padding: 24px 32px 72px; display: flex; flex-wrap: wrap; gap: 48px; align-items: stretch">
-    <div style="flex: 1 1 420px; display: flex; flex-direction: column; justify-content: center; gap: 26px; padding: 40px 0">
-      <span class="mk m-tag forest" role="img" aria-label="חנות. שוק איכרים קהילתי מקומי." style="display: block; width: 330px; height: 40px; max-width: 100%; -webkit-mask-position: right center; mask-position: right center"></span>
-      <h1 style="margin: 0; font-size: clamp(44px, 5.6vw, 84px); line-height: 1.02; font-weight: 900; letter-spacing: -1px">תוצרת מקומית.<br>קהילה אמיתית.<br><span style="color: #638C55">ברמת הגולן.</span></h1>
-      <p style="margin: 0; font-size: 20px; line-height: 1.7; font-weight: 300; max-width: 520px">משק רם הוא משק משפחתי וחנות קהילתית: שוק איכרים קטן ומקורה, עם תוצרת חקלאית, יצרני בוטיק מקומיים ועשייה אמיתית במקום.</p>
-      <div style="display: flex; gap: 14px; flex-wrap: wrap">
-        <a href="/departments/" class="btn-cream" style="padding: 16px 32px; font-weight: 700; font-size: 17px; border-radius: 4px">למחלקות ולמוצרים</a>
-        <a href="/visitor-center/" style="padding: 15px 32px; font-weight: 700; font-size: 17px; border-radius: 4px; border: 1.5px solid #EBE7D7; text-decoration: none">שעות ודרכי הגעה</a>
-      </div>
-    </div>
-    <div style="flex: 1 1 520px; position: relative; min-height: 620px">
-      <img src="/assets/lettuce.jpg" alt="ידיים קוטפות חסה טרייה" style="position: absolute; inset: 0 0 0 90px; width: calc(100% - 90px); height: 100%; object-fit: cover; border-radius: 4px">
-      <img src="/assets/woman.jpg" alt="קטיף תותים בשדה" style="position: absolute; left: 0; bottom: 40px; width: 230px; height: 300px; object-fit: cover; border: 8px solid #172F1B; border-radius: 4px">
-      <span class="mk m-lemon forest" aria-hidden="true" style="position: absolute; top: -10px; left: 10px; width: 150px; height: 116px"></span>
-    </div>
-  </section>
-
-  <!-- Icon ribbon -->
-  <section aria-label="מה יש במשק" class="forest" style="color: #172F1B; padding: 26px 32px; overflow: hidden">
-    <div style="max-width: 1360px; margin: 0 auto; display: flex; gap: 34px; align-items: center; justify-content: space-between; flex-wrap: wrap; font-size: 19px; font-weight: 700">
-      <span style="display: flex; align-items: center; gap: 10px"><span class="mk m-cheese deep" aria-hidden="true" style="width: 46px; height: 36px"></span>מעדניית גבינות</span>
-      <span style="display: flex; align-items: center; gap: 10px"><span class="mk m-baguette deep" aria-hidden="true" style="width: 60px; height: 30px"></span>טאבון</span>
-      <span style="display: flex; align-items: center; gap: 10px"><span class="mk m-jar deep" aria-hidden="true" style="width: 30px; height: 42px"></span>מיצים סחוטים</span>
-      <span style="display: flex; align-items: center; gap: 10px"><span class="mk m-coffee deep" aria-hidden="true" style="width: 40px; height: 42px"></span>קפה</span>
-      <span style="display: flex; align-items: center; gap: 10px"><span class="mk m-scoop deep" aria-hidden="true" style="width: 54px; height: 40px"></span>ייבוש וקלייה</span>
-      <span style="display: flex; align-items: center; gap: 10px"><span class="mk m-sandwich deep" aria-hidden="true" style="width: 60px; height: 32px"></span>כריכים</span>
-      <span style="display: flex; align-items: center; gap: 10px"><span class="mk m-honey deep" aria-hidden="true" style="width: 38px; height: 42px"></span>גלידה ודבש</span>
-    </div>
-  </section>
-
-  <!-- About statement -->
-  <section id="about" class="cream" style="color: #172F1B; padding: 120px 32px">
-    <div style="max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
-      <span style="font-family: 'Gveret Levin', cursive; font-size: 32px; color: #638C55">אודות</span>
-      <p style="margin: 0; font-size: clamp(30px, 3.4vw, 48px); line-height: 1.3; font-weight: 700">משק משפחתי ברמת הגולן, שמחבר בין תוצרת מקומית לקהילה רחבה של טעם וערכים.</p>
-      <div style="display: flex; flex-wrap: wrap; gap: 12px 34px; font-size: 18px; font-weight: 500; border-top: 1.5px solid #172F1B; padding-top: 24px">
-        <span>אותנטיות</span><span aria-hidden="true">·</span><span>קהילתיות</span><span aria-hidden="true">·</span><span>פשטות אנושית</span><span aria-hidden="true">·</span><span>בוטיק</span><span aria-hidden="true">·</span><span>איכות שקטה</span><span aria-hidden="true">·</span><span>שורשיות</span>
-      </div>
-      <a href="/about/" class="darklink" style="align-self: flex-start; font-weight: 700; font-size: 18px">עוד עלינו ←</a>
-    </div>
-  </section>
-
-  <!-- Departments mosaic -->
-  <section id="departments" class="cream" style="color: #172F1B; padding: 0 32px 120px">
-    <div style="max-width: 1360px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px">
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap">
-        <h2 style="margin: 0; font-size: 52px; font-weight: 900; letter-spacing: -.5px">מחלקות ומוצרים</h2>
-        <a href="/departments/" class="btn-deep" style="padding: 13px 28px; font-weight: 700; border-radius: 4px">לכל המחלקות</a>
-      </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px">
-        <a href="/departments/" class="tile" style="height: 420px; border-radius: 4px">
-          <img src="/assets/peppers.jpg" alt="פלפלים טריים בארגז" style="width: 100%; height: 100%; object-fit: cover; display: block">
-          <span style="position: absolute; inset: auto 0 0 0; padding: 60px 24px 22px; background: linear-gradient(transparent, rgba(23,47,27,.85)); color: #EBE7D7; font-size: 26px; font-weight: 800">פירות וירקות</span>
-        </a>
-        <a href="/departments/" class="tile" style="height: 420px; border-radius: 4px">
-          <img src="/assets/jars.jpg" alt="צנצנות שימורים על מדף" style="width: 100%; height: 100%; object-fit: cover; display: block">
-          <span style="position: absolute; inset: auto 0 0 0; padding: 60px 24px 22px; background: linear-gradient(transparent, rgba(23,47,27,.85)); color: #EBE7D7; font-size: 26px; font-weight: 800">מזווה ויצרני בוטיק</span>
-        </a>
-        <a href="/departments/" class="tile forest" style="height: 420px; border-radius: 4px; color: #172F1B; display: flex; flex-direction: column; justify-content: space-between; padding: 28px; box-sizing: border-box">
-          <span class="mk m-cheese deep" aria-hidden="true" style="display: block; width: 180px; height: 134px"></span>
-          <span style="font-size: 26px; font-weight: 800">מעדניית גבינות<span style="display: block; font-size: 17px; font-weight: 400; margin-top: 6px">גבינות של יצרנים מקומיים, נחתכות במקום</span></span>
-        </a>
-        <a href="/departments/" class="tile" style="height: 420px; border-radius: 4px">
-          <img src="/assets/espresso.jpg" alt="קפה נמזג לכוס ממותגת" style="width: 100%; height: 100%; object-fit: cover; display: block">
-          <span style="position: absolute; inset: auto 0 0 0; padding: 60px 24px 22px; background: linear-gradient(transparent, rgba(23,47,27,.85)); color: #EBE7D7; font-size: 26px; font-weight: 800">קפה וכריכים</span>
-        </a>
-        <a href="/departments/" class="tile craft" style="height: 420px; border-radius: 4px; color: #172F1B; display: flex; flex-direction: column; justify-content: space-between; padding: 28px; box-sizing: border-box">
-          <span class="mk m-baguette deep" aria-hidden="true" style="display: block; width: 220px; height: 96px"></span>
-          <span style="font-size: 26px; font-weight: 800">טאבון ומאפים<span style="display: block; font-size: 17px; font-weight: 400; margin-top: 6px">[תיאור קצר של המאפים מהטאבון]</span></span>
-        </a>
-        <a href="/departments/" class="tile" style="height: 420px; border-radius: 4px">
-          <img src="/assets/potatoes.jpg" alt="תפוחי אדמה מהשדה" style="width: 100%; height: 100%; object-fit: cover; display: block">
-          <span style="position: absolute; inset: auto 0 0 0; padding: 60px 24px 22px; background: linear-gradient(transparent, rgba(23,47,27,.85)); color: #EBE7D7; font-size: 26px; font-weight: 800">ירקות עונה</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Story -->
-  <section id="story" class="craft" style="color: #172F1B; padding: 0">
-    <div style="display: flex; flex-wrap: wrap">
-      <img src="/assets/store.jpg" alt="איש צוות בחנות משק רם" style="flex: 1 1 520px; min-height: 560px; width: 100%; object-fit: cover; display: block">
-      <div style="flex: 1 1 480px; padding: 88px 56px; display: flex; flex-direction: column; justify-content: center; gap: 24px; box-sizing: border-box">
-        <span style="font-family: 'Gveret Levin', cursive; font-size: 32px">סיפור החנות</span>
-        <p style="margin: 0; font-size: clamp(30px, 3vw, 44px); line-height: 1.2; font-weight: 900">״גוף עסקי הפועל בתוך הקהילה, מתוך הקהילה ועבור הקהילה״</p>
-        <p style="margin: 0; font-size: 18px; line-height: 1.8; max-width: 520px">[כאן ייכנס הסיפור של החנות: איך התחיל המשק, מי המשפחה, ואיך החנות הפכה למקום מפגש של הקהילה בגולן.]</p>
-        <a href="/our-story/" class="btn-deep" style="align-self: flex-start; padding: 14px 30px; font-weight: 700; border-radius: 4px">לסיפור המלא</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Friends -->
-  <section id="friends" style="padding: 120px 32px; position: relative; overflow: hidden">
-    <span class="mk m-herb forest" aria-hidden="true" style="position: absolute; top: 60px; left: 50px; width: 120px; height: 176px; opacity: .6"></span>
-    <div style="max-width: 1360px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; position: relative">
-      <div style="display: flex; flex-direction: column; gap: 12px; max-width: 640px">
-        <span style="font-family: 'Gveret Levin', cursive; font-size: 32px; color: #638C55">האנשים שמאחורי המדפים</span>
-        <h2 style="margin: 0; font-size: 52px; font-weight: 900">החברים של המשק</h2>
-        <p style="margin: 0; font-size: 19px; line-height: 1.7; font-weight: 300">חקלאים ויצרני בוטיק מהגולן ומהסביבה, שהתוצרת שלהם מגיעה אלינו לחנות.</p>
-      </div>
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px">
-        <figure style="margin: 0; display: flex; flex-direction: column; gap: 14px"><img src="/assets/farmer1.jpg" alt="חקלאי מחזיק סלק מהשדה" style="width: 100%; height: 400px; object-fit: cover; border-radius: 4px"><figcaption><span style="font-family: 'Gveret Levin', cursive; font-size: 28px">[שם היצרן]</span><span style="display: block; font-size: 16px; opacity: .8">[מה מגדלים / מייצרים]</span></figcaption></figure>
-        <figure style="margin: 0; display: flex; flex-direction: column; gap: 14px"><img src="/assets/berries.jpg" alt="קטיף פטל" style="width: 100%; height: 400px; object-fit: cover; border-radius: 4px"><figcaption><span style="font-family: 'Gveret Levin', cursive; font-size: 28px">[שם היצרן]</span><span style="display: block; font-size: 16px; opacity: .8">[מה מגדלים / מייצרים]</span></figcaption></figure>
-        <figure style="margin: 0; display: flex; flex-direction: column; gap: 14px"><img src="/assets/farmers.jpg" alt="שני חקלאים בשדה" style="width: 100%; height: 400px; object-fit: cover; border-radius: 4px"><figcaption><span style="font-family: 'Gveret Levin', cursive; font-size: 28px">[שם היצרן]</span><span style="display: block; font-size: 16px; opacity: .8">[מה מגדלים / מייצרים]</span></figcaption></figure>
-        <figure style="margin: 0; display: flex; flex-direction: column; gap: 14px"><img src="/assets/farmer2.jpg" alt="חקלאי עובד בערוגה" style="width: 100%; height: 400px; object-fit: cover; border-radius: 4px"><figcaption><span style="font-family: 'Gveret Levin', cursive; font-size: 28px">[שם היצרן]</span><span style="display: block; font-size: 16px; opacity: .8">[מה מגדלים / מייצרים]</span></figcaption></figure>
-      </div>
-      <a href="/friends/" style="align-self: flex-start; font-weight: 700; font-size: 18px">לכל החברים של המשק ←</a>
-    </div>
-  </section>
-
-  <!-- Visit -->
-  <section id="visit" class="cream" style="color: #172F1B; padding: 110px 32px">
-    <div style="max-width: 1360px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 56px; align-items: center">
-      <div style="display: flex; flex-direction: column; gap: 22px">
-        <span style="font-family: 'Gveret Levin', cursive; font-size: 32px; color: #638C55">בואו לבקר</span>
-        <h2 style="margin: 0; font-size: 52px; font-weight: 900; line-height: 1.05">חנות ומרכז מבקרים</h2>
-        <p style="margin: 0; font-size: 19px; line-height: 1.75">קפה, כריך מהטאבון, גלידה ומיץ סחוט, וסיבוב בין דוכני התוצרת. מקום לעצור בו בדרך, ולחזור אליו כל שבוע.</p>
-        <dl style="margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 28px; border-top: 1.5px solid #172F1B; padding-top: 24px">
-          <div><dt style="font-size: 14px; color: #3f5a3a">ראשון–חמישי</dt><dd style="margin: 4px 0 0; font-size: 21px; font-weight: 800">[שעות]</dd></div>
-          <div><dt style="font-size: 14px; color: #3f5a3a">שישי וערבי חג</dt><dd style="margin: 4px 0 0; font-size: 21px; font-weight: 800">[שעות]</dd></div>
-          <div><dt style="font-size: 14px; color: #3f5a3a">כתובת</dt><dd style="margin: 4px 0 0; font-size: 19px; font-weight: 800">[כתובת], רמת הגולן</dd></div>
-          <div><dt style="font-size: 14px; color: #3f5a3a">טלפון</dt><dd style="margin: 4px 0 0; font-size: 19px; font-weight: 800">[טלפון]</dd></div>
+  <!-- Screen 1: hero -->
+  <section id="top" style="max-width: 1280px; margin: 0 auto; padding: 24px 40px 72px">
+    <div class="hero-grid" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 56px; align-items: stretch; min-height: 720px">
+      <div style="display: flex; flex-direction: column; justify-content: center; gap: 28px">
+        <span class="mk m-tag enter" role="img" aria-label="חנות. שוק איכרים קהילתי מקומי." style="display: block; width: 300px; height: 36px; background: #638C55; -webkit-mask-position: right center; mask-position: right center"></span>
+        <h1 class="enter d1" style="margin: 0; font-size: clamp(48px, 5.4vw, 80px); line-height: 1.02; font-weight: 900; letter-spacing: -0.02em; text-wrap: balance">שוק איכרים קהילתי ברמת הגולן</h1>
+        <p class="enter d2" style="margin: 0; font-size: 20px; line-height: 1.65; max-width: 34ch">משק משפחתי שמוכר את התוצרת שלו ושל חקלאים ויצרני בוטיק מהאזור, תחת גג אחד. קפה, טאבון, גבינות ומיצים, ממש כאן.</p>
+        <div class="enter d3" style="display: flex; gap: 12px; flex-wrap: wrap">
+          <a href="/visitor-center/" class="btn">לנווט אל המשק</a>
+          <a href="#departments" class="btn alt">לראות מה בעונה</a>
+        </div>
+        <dl class="enter d4" style="margin: 8px 0 0; display: flex; gap: 32px; flex-wrap: wrap; border-top: 1.5px solid rgba(23,47,27,.22); padding-top: 18px">
+          <div><dt style="font-size: 14px; color: #2E4A31">פתוח היום</dt><dd data-assumed="true" style="margin: 2px 0 0; font-size: 19px; font-weight: 800">[שעות]</dd></div>
+          <div><dt style="font-size: 14px; color: #2E4A31">איפה</dt><dd style="margin: 2px 0 0; font-size: 19px; font-weight: 800">רמת הגולן</dd></div>
         </dl>
-        <div style="display: flex; gap: 14px; flex-wrap: wrap">
-          <a href="/visitor-center/" class="btn-deep" style="padding: 15px 30px; font-weight: 700; border-radius: 4px">ניווט ב-Waze</a>
-          <a href="/contact/" class="darklink" style="padding: 14px 30px; font-weight: 700; border-radius: 4px; border: 1.5px solid #172F1B; text-decoration: none">תיאום ביקור קבוצתי</a>
+      </div>
+      <div class="frame hero-photo-wrap" style="position: relative; min-height: 640px; border-radius: 8px">
+        <img class="hero-photo" src="/assets/store.jpg" alt="איש צוות בחולצת משק רם מאחורי הדלפק בחנות" style="position: absolute; inset: 0">
+      </div>
+    </div>
+  </section>
+
+  <!-- Screen 2: the visit + type moment -->
+  <section class="on-deep" aria-labelledby="visit-h" style="background: #172F1B; color: #EBE7D7; overflow: hidden">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 104px 40px 0">
+      <div class="split" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: end">
+        <div style="display: flex; flex-direction: column; gap: 22px; padding-bottom: 40px">
+          <h2 id="visit-h" style="margin: 0; font-size: 48px; line-height: 1.08; font-weight: 900; text-wrap: balance">עוצרים בדרך, יוצאים עם סל מלא</h2>
+          <p style="margin: 0; font-size: 19px; line-height: 1.7; max-width: 46ch; color: #D9D5C3">קפה ומאפה מהטאבון, מיץ שנסחט מול העיניים, ודוכנים של תוצרת טרייה. החנות היא שוק קטן ומקורה, ונעים להסתובב בה גם בגשם.</p>
+          <dl style="margin: 10px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 32px">
+            <div><dt style="font-size: 14px; color: #C9C4AE">ראשון עד חמישי</dt><dd data-assumed="true" style="margin: 4px 0 0; font-size: 22px; font-weight: 800">[שעות]</dd></div>
+            <div><dt style="font-size: 14px; color: #C9C4AE">שישי וערבי חג</dt><dd data-assumed="true" style="margin: 4px 0 0; font-size: 22px; font-weight: 800">[שעות]</dd></div>
+          </dl>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px">
+            <a href="/visitor-center/" class="btn">לנווט עם Waze</a>
+            <a href="/contact/" class="btn alt">לתאם ביקור קבוצתי</a>
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 12px; align-items: end">
+          <div class="frame" style="height: 460px; border-radius: 8px 8px 0 0"><img class="reveal" src="/assets/sign.jpg" alt="שלט הכוונה של משק רם בצד הדרך"></div>
+          <div class="frame" style="height: 320px; border-radius: 8px 8px 0 0"><img class="reveal" src="/assets/aframe.jpg" alt="שלט עומד בכניסה לחנות"></div>
         </div>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
-        <img src="/assets/corn.jpg" alt="קלחי תירס טריים" style="width: 100%; height: 440px; object-fit: cover; border-radius: 4px">
-        <img src="/assets/jars.jpg" alt="מדף צנצנות בחנות" style="width: 100%; height: 440px; object-fit: cover; border-radius: 4px; margin-top: 56px">
+    </div>
+    <p class="moment-word" aria-hidden="true" style="margin: 0; padding: 12px 40px 0; font-size: clamp(120px, 17vw, 260px); line-height: .82; font-weight: 900; letter-spacing: -0.04em; color: #638C55; white-space: nowrap; text-align: center">רמת הגולן</p>
+  </section>
+
+  <!-- Screen 3: the offer (hover swaps the photograph) -->
+  <section id="departments" aria-labelledby="dep-h" style="max-width: 1280px; margin: 0 auto; padding: 120px 40px">
+    <div class="split" style="display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 64px; align-items: stretch">
+      <div style="display: flex; flex-direction: column">
+        <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 28px">
+          <h2 id="dep-h" style="margin: 0; font-size: 48px; font-weight: 900; line-height: 1.08">מה יש על הדוכנים</h2>
+          <span style="font-family: 'Gveret Levin', cursive; font-size: 28px; color: #2E4A31">לפי העונה</span>
+        </div>
+        <a href="/departments/" class="dep-row is-on" data-i="0"><span style="display: flex; flex-direction: column; gap: 6px"><span class="dep-name">פירות וירקות</span><span style="font-size: 16px; color: #2E4A31">מהמשק ומחקלאי הסביבה, לפי העונה</span></span><span class="dep-arrow" aria-hidden="true">←</span></a><a href="/departments/" class="dep-row" data-i="1"><span style="display: flex; flex-direction: column; gap: 6px"><span class="dep-name">ירקות העונה</span><span style="font-size: 16px; color: #2E4A31">מה שנקטף השבוע, ישר לדוכן</span></span><span class="dep-arrow" aria-hidden="true">←</span></a><a href="/departments/" class="dep-row" data-i="2"><span style="display: flex; flex-direction: column; gap: 6px"><span class="dep-name">מזווה ויצרני בוטיק</span><span style="font-size: 16px; color: #2E4A31">ממרחים, שימורים ומוצרים של יצרנים קטנים</span></span><span class="dep-arrow" aria-hidden="true">←</span></a><a href="/departments/" class="dep-row" data-i="3"><span style="display: flex; flex-direction: column; gap: 6px"><span class="dep-name">קפה, כריכים וטאבון</span><span style="font-size: 16px; color: #2E4A31">פינה לשבת, לאכול ולהמשיך בדרך</span></span><span class="dep-arrow" aria-hidden="true">←</span></a><a href="/departments/" class="dep-row" data-i="4"><span style="display: flex; flex-direction: column; gap: 6px"><span class="dep-name">ירקות שורש</span><span style="font-size: 16px; color: #2E4A31">תפוחי אדמה, בטטות ושאר אוצרות מהאדמה</span></span><span class="dep-arrow" aria-hidden="true">←</span></a><a href="/departments/" class="dep-row" data-i="5"><span style="display: flex; flex-direction: column; gap: 6px"><span class="dep-name">פירות קיץ</span><span style="font-size: 16px; color: #2E4A31">מלונים, פירות יער ועוד, כשהעונה מגיעה</span></span><span class="dep-arrow" aria-hidden="true">←</span></a>
+        <a href="/departments/" class="btn alt" style="align-self: flex-start; margin-top: 32px">לכל המחלקות</a>
+      </div>
+      <div class="frame" style="position: relative; min-height: 640px; border-radius: 8px">
+        <img class="dep-photo is-on" data-i="0" src="/assets/peppers.jpg" alt="פלפלים אדומים טריים בארגז"><img class="dep-photo" data-i="1" src="/assets/corn.jpg" alt="קלחי תירס צהובים" loading="lazy"><img class="dep-photo" data-i="2" src="/assets/jars.jpg" alt="צנצנות שימורים על מדף" loading="lazy"><img class="dep-photo" data-i="3" src="/assets/espresso.jpg" alt="קפה נמזג לכוס ממותגת של משק רם" loading="lazy"><img class="dep-photo" data-i="4" src="/assets/potatoes.jpg" alt="תפוחי אדמה עם אדמה עליהם" loading="lazy"><img class="dep-photo" data-i="5" src="/assets/melons.jpg" alt="מלונים בשלים בערימה" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- Screen 4: made here -->
+  <section aria-labelledby="made-h" style="background: #E2DDCA">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 120px 40px">
+      <div class="split" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 64px; align-items: center">
+        <div style="display: flex; flex-direction: column; gap: 26px">
+          <h2 id="made-h" style="margin: 0; font-size: 48px; font-weight: 900; line-height: 1.08; text-wrap: balance">עשייה במקום, מול העיניים</h2>
+          <p style="margin: 0; font-size: 19px; line-height: 1.7; max-width: 44ch">חלק ממה שנמכר כאן נעשה כאן. קולים, מייבשים, סוחטים ואופים בתוך החנות, כך שתמיד יש ריח של משהו טרי.</p>
+          <ul style="list-style: none; margin: 6px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 28px; font-size: 18px; font-weight: 700">
+            <li style="display: flex; align-items: center; gap: 14px"><span class="mk m-scoop" aria-hidden="true" style="width: 44px; height: 34px; background: #172F1B; flex: none"></span>ייבוש וקלייה</li>
+            <li style="display: flex; align-items: center; gap: 14px"><span class="mk m-baguette" aria-hidden="true" style="width: 44px; height: 34px; background: #172F1B; flex: none"></span>טאבון</li>
+            <li style="display: flex; align-items: center; gap: 14px"><span class="mk m-jar" aria-hidden="true" style="width: 44px; height: 34px; background: #172F1B; flex: none"></span>סחיטת מיצים</li>
+            <li style="display: flex; align-items: center; gap: 14px"><span class="mk m-cheese" aria-hidden="true" style="width: 44px; height: 34px; background: #172F1B; flex: none"></span>מעדניית גבינות</li>
+            <li style="display: flex; align-items: center; gap: 14px"><span class="mk m-coffee" aria-hidden="true" style="width: 44px; height: 34px; background: #172F1B; flex: none"></span>קפה</li>
+            <li style="display: flex; align-items: center; gap: 14px"><span class="mk m-sandwich" aria-hidden="true" style="width: 44px; height: 34px; background: #172F1B; flex: none"></span>כריכים</li>
+            <li style="display: flex; align-items: center; gap: 14px"><span class="mk m-honey" aria-hidden="true" style="width: 44px; height: 34px; background: #172F1B; flex: none"></span>דבש וגלידה</li>
+            <li style="display: flex; align-items: center; gap: 14px"><span class="mk m-bottle" aria-hidden="true" style="width: 44px; height: 34px; background: #172F1B; flex: none"></span>שמן זית</li>
+          </ul>
+        </div>
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: 300px 300px; gap: 12px">
+          <div class="frame" style="grid-row: 1 / 3"><img class="reveal" src="/assets/picking.jpg" alt="ידיים מניחות עגבניות בארגז"></div>
+          <div class="frame"><img class="reveal" src="/assets/spinach.jpg" alt="קטיף תרד טרי"></div>
+          <div class="frame"><img class="reveal" src="/assets/rhubarb.jpg" alt="דוכן ירקות ועלי ריבס"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screen 5: the vision, set large -->
+  <section aria-labelledby="story-h" style="background: #638C55">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 128px 40px; display: flex; flex-direction: column; gap: 40px">
+      <h2 id="story-h" style="margin: 0; font-size: clamp(44px, 5.6vw, 84px); line-height: 1.04; font-weight: 900; letter-spacing: -0.02em; color: #172F1B; max-width: 16ch; text-wrap: balance">בתוך הקהילה, מתוך הקהילה ועבור הקהילה</h2>
+      <div style="display: flex; gap: 40px; align-items: flex-end; justify-content: space-between; flex-wrap: wrap">
+        <p style="margin: 0; font-size: 24px; line-height: 1.55; font-weight: 500; color: #172F1B; max-width: 38ch">ככה נולדה החנות, וככה היא עובדת עד היום. [משפט אחד מהמשפחה על איך הכול התחיל.]</p>
+        <a href="/our-story/" class="btn">לקרוא את סיפור החנות</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screen 6: the friends -->
+  <section aria-labelledby="friends-h" style="max-width: 1280px; margin: 0 auto; padding: 120px 40px">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: 40px">
+      <div style="display: flex; flex-direction: column; gap: 14px; max-width: 560px">
+        <h2 id="friends-h" style="margin: 0; font-size: 48px; font-weight: 900; line-height: 1.08">החברים של המשק</h2>
+        <p style="margin: 0; font-size: 19px; line-height: 1.7">החקלאים והיצרנים שהתוצרת שלהם על המדפים. רובם גרים במרחק נסיעה קצרה מאיתנו.</p>
+      </div>
+      <a href="/friends/" class="btn alt">להכיר את כולם</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 12px">
+      <a href="/friends/" class="frame lift" style="grid-column: span 5; height: 520px; position: relative; display: block"><img class="reveal" src="/assets/farmer1.jpg" alt="חקלאי מחזיק צרור סלק מהשדה"><span style="position: absolute; inset-inline-start: 16px; bottom: 16px; background: #172F1B; color: #EBE7D7; padding: 8px 14px; border-radius: 999px; font-size: 15px; font-weight: 700">[שם] · ירקות</span></a>
+      <a href="/friends/" class="frame lift" style="grid-column: span 4; height: 520px; position: relative; display: block"><img class="reveal" src="/assets/woman.jpg" alt="חקלאית צוחקת עם סלסלת תותים"><span style="position: absolute; inset-inline-start: 16px; bottom: 16px; background: #172F1B; color: #EBE7D7; padding: 8px 14px; border-radius: 999px; font-size: 15px; font-weight: 700">[שם] · פירות</span></a>
+      <div style="grid-column: span 3; display: grid; grid-template-rows: 1fr 1fr; gap: 12px; height: 520px">
+        <a href="/friends/" class="frame lift" style="position: relative; display: block"><img class="reveal" src="/assets/farmers.jpg" alt="שני חקלאים בשדה"><span style="position: absolute; inset-inline-start: 12px; bottom: 12px; background: #172F1B; color: #EBE7D7; padding: 6px 12px; border-radius: 999px; font-size: 14px; font-weight: 700">[שם] · עלים</span></a>
+        <a href="/friends/" class="frame lift" style="position: relative; display: block"><img class="reveal" src="/assets/cans.jpg" alt="שימורים של יצרן מקומי בארגז עץ"><span style="position: absolute; inset-inline-start: 12px; bottom: 12px; background: #172F1B; color: #EBE7D7; padding: 6px 12px; border-radius: 999px; font-size: 14px; font-weight: 700">[שם] · מזווה</span></a>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
   </main>
-<footer id="contact" class="forest" style="color: #172F1B; padding: 72px 32px 36px">
-    <div style="max-width: 1360px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px">
-        <div style="display: flex; flex-direction: column; gap: 16px">
-          <span class="mk m-logo deep" role="img" aria-label="משק רם" style="display: block; width: 200px; height: 64px; -webkit-mask-position: right center; mask-position: right center"></span>
-          <span class="mk m-tag deep" role="img" aria-label="חנות. שוק איכרים קהילתי מקומי." style="display: block; width: 240px; height: 30px; -webkit-mask-position: right center; mask-position: right center"></span>
+<footer id="contact" class="on-deep" style="background: #172F1B; color: #EBE7D7">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 88px 40px 36px; display: flex; flex-direction: column; gap: 56px">
+      <div class="split" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: end">
+        <div style="display: flex; flex-direction: column; gap: 18px">
+          <span class="mk m-logo" role="img" aria-label="משק רם" style="display: block; width: 240px; height: 78px; background: #EBE7D7; -webkit-mask-position: right center; mask-position: right center"></span>
+          <p style="margin: 0; font-size: 19px; line-height: 1.6; color: #D9D5C3; max-width: 38ch">מה חדש על הדוכנים, אירועים וסדנאות. מייל אחד בשבוע, בלי הצפות.</p>
         </div>
-        <nav aria-label="ניווט תחתון" style="display: flex; flex-direction: column; gap: 10px; font-size: 16px">
-          <strong style="font-size: 17px">ניווט</strong>
-          <a class="darklink" href="/about/">אודות</a><a class="darklink" href="/our-story/">סיפור החנות</a><a class="darklink" href="/friends/">החברים של המשק</a><a class="darklink" href="/departments/">מחלקות ומוצרים</a><a class="darklink" href="/visitor-center/">חנות ומרכז מבקרים</a><a class="darklink" href="/contact/">צור קשר</a>
-        </nav>
-        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 16px">
-          <strong style="font-size: 17px">צור קשר</strong>
-          <span>[טלפון]</span><span>[אימייל]</span><span>[כתובת], רמת הגולן</span><span>אינסטגרם: [@meshek_ram]</span>
-        </div>
-        <form style="display: flex; flex-direction: column; gap: 10px">
-          <label for="b-mail" style="font-weight: 700; font-size: 17px">מה חדש במשק? הצטרפו לעדכונים</label>
-          <input id="b-mail" type="email" placeholder="כתובת אימייל" style="font-family: inherit; font-size: 16px; padding: 13px 16px; border: 1.5px solid #172F1B; background: #EBE7D7; border-radius: 4px; color: #172F1B">
-          <button type="button" class="btn-deep" style="font-family: inherit; font-size: 16px; font-weight: 700; padding: 13px; border: 0; border-radius: 4px; cursor: pointer">הרשמה</button>
+        <form style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end">
+          <label style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; font-weight: 700">כתובת אימייל<input type="email" autocomplete="email" style="font-family: inherit; font-size: 17px; padding: 0 18px; min-height: 52px; border: 1.5px solid #EBE7D7; background: transparent; color: #EBE7D7; border-radius: 999px"></label>
+          <button type="button" class="btn" style="border: 0; font-family: inherit; cursor: pointer">להצטרף לעדכונים</button>
         </form>
       </div>
-      <div style="border-top: 1px solid rgba(23,47,27,.35); padding-top: 20px; font-size: 14px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap">
-        <span>© משק רם. כל הזכויות שמורות.</span><span>הצהרת נגישות · תקנון</span>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 32px; border-top: 1px solid rgba(235,231,215,.2); padding-top: 32px; font-size: 16px">
+        <nav aria-label="ניווט תחתון" style="display: flex; flex-direction: column; gap: 10px">
+          <a href="/about/" style="color: #EBE7D7">אודות</a><a href="/our-story/" style="color: #EBE7D7">סיפור החנות</a><a href="/friends/" style="color: #EBE7D7">החברים של המשק</a>
+        </nav>
+        <nav aria-label="עוד" style="display: flex; flex-direction: column; gap: 10px">
+          <a href="/departments/" style="color: #EBE7D7">מחלקות ומוצרים</a><a href="/visitor-center/" style="color: #EBE7D7">חנות ומרכז מבקרים</a><a href="/contact/" style="color: #EBE7D7">צור קשר</a>
+        </nav>
+        <div style="display: flex; flex-direction: column; gap: 10px; color: #D9D5C3">
+          <span>רמת הגולן</span><span>[טלפון]</span><span>[אימייל]</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; color: #D9D5C3">
+          <span>© משק רם</span><span>הצהרת נגישות</span>
+        </div>
       </div>
     </div>
   </footer>
 </div>
+<script>
+(function(){var rows=document.querySelectorAll('.dep-row'),imgs=document.querySelectorAll('.dep-photo');
+function on(i){rows.forEach(function(r){r.classList.toggle('is-on',r.dataset.i==i)});imgs.forEach(function(m){m.classList.toggle('is-on',m.dataset.i==i)})}
+rows.forEach(function(r){r.addEventListener('mouseenter',function(){on(r.dataset.i)});r.addEventListener('focus',function(){on(r.dataset.i)})});})();
+</script>
 </body>
 </html>
