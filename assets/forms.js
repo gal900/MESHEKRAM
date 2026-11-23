@@ -40,7 +40,8 @@
       if (el.type === 'email' && !data.email) { data.email = v; return; }
       if (el.type === 'tel' && !data.phone) { data.phone = v.replace(/^\+?972/, '0').replace(/\D/g, ''); return; }
       if (el.type === 'text' && !data.name && /שם/.test(labelOf(el))) { data.name = v; return; }
-      if (v) notes.push(labelOf(el) + ': ' + v);
+      if (el.type === 'hidden' || el.type === 'submit' || el.type === 'button') return;
+      notes.push(labelOf(el) + ': ' + (v || 'לא צוין'));
     });
     var isNews = form.closest('footer');
     if (!isNews && data.phone && !/^0\d{8,9}$/.test(data.phone)) {
@@ -53,7 +54,7 @@
       msg.setAttribute('role', 'alert');
       return;
     }
-    notes.unshift('מקור: ' + kind(form) + ' | עמוד: ' + document.title);
+    notes.unshift('מקור: ' + kind(form) + ' | עמוד: ' + location.pathname);
     var post = document.createElement('form');
     post.method = 'POST'; post.action = ENDPOINT; post.acceptCharset = 'UTF-8'; post.enctype = 'application/x-www-form-urlencoded'; post.target = 'mp_sink'; post.style.display = 'none';
     var vals = {};
