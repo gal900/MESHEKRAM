@@ -67,11 +67,50 @@ html{scroll-behavior:smooth}
 img{max-width:100%}
 .skip{position:absolute;right:-9999px;top:0;background:#EBE7D7;color:#172F1B;padding:10px 16px;z-index:10}
 .skip:focus{right:8px}
+.menu-btn{display:none;align-items:center;justify-content:center;width:48px;height:48px;border:1.5px solid rgba(235,231,215,.5);border-radius:10px;background:transparent;color:#EBE7D7;cursor:pointer;transition:transform 160ms cubic-bezier(0.23,1,0.32,1)}
+.menu-btn:active{transform:scale(0.95)}
+.menu-btn .i-close{display:none}
+header.open .menu-btn .i-open{display:none}
+header.open .menu-btn .i-close{display:block}
+@media (max-width: 900px){
+  header{position:relative;flex-wrap:nowrap !important;padding-top:14px !important;padding-bottom:14px !important}
+  .menu-btn{display:inline-flex}
+  header nav.nav{position:absolute;top:100%;left:0;right:0;z-index:50;display:flex !important;flex-direction:column;flex-wrap:nowrap !important;gap:0 !important;width:auto !important;overflow:visible !important;padding:6px 24px 18px !important;background:#172F1B;border-top:1px solid rgba(235,231,215,.15);box-shadow:0 18px 30px rgba(0,0,0,.25);white-space:normal !important;
+    opacity:0;visibility:hidden;transform:translateY(-8px);transition:opacity 200ms cubic-bezier(0.23,1,0.32,1),transform 200ms cubic-bezier(0.23,1,0.32,1),visibility 0s linear 200ms}
+  header.open nav.nav{opacity:1;visibility:visible;transform:none;transition:opacity 220ms cubic-bezier(0.23,1,0.32,1),transform 220ms cubic-bezier(0.23,1,0.32,1),visibility 0s}
+  header nav.nav a{display:block;padding:15px 0 !important;font-size:19px;border-bottom:1px solid rgba(235,231,215,.12) !important}
+  header nav.nav a:last-child{border-bottom:0 !important}
+  header nav.nav a[aria-current="page"]{border-bottom-color:rgba(235,231,215,.12) !important;color:#CDB787}
+}
+@media (max-width: 760px){
+  main section{padding-top:64px !important;padding-bottom:64px !important}
+  main > section:first-child{padding-top:20px !important;padding-bottom:48px !important}
+  #top{gap:28px !important}
+  [style*="min-height: 620px"]{min-height:440px !important}
+  [style*="width: 230px; height: 300px"]{width:150px !important;height:200px !important;bottom:20px !important}
+  [style*="padding: 40px 0"]{padding:8px 0 !important}
+  [style*="min-height: 560px"],[style*="min-height: 520px"]{min-height:300px !important}
+  [style*="height: 420px"]{height:300px !important}
+  [style*="height: 440px"],[style*="height: 400px"],[style*="height: 380px"],[style*="height: 360px"],[style*="height: 340px"]{height:300px !important}
+  [style*="padding: 88px 56px"],[style*="padding: 96px 56px"]{padding:48px 20px !important}
+  [style*="font-size: 52px"]{font-size:36px !important}
+  [style*="font-size: 32px"]{font-size:26px !important}
+  [style*="margin-bottom: 40px"],[style*="margin-bottom: 44px"]{margin-bottom:24px !important}
+  [style*="gap: 56px"],[style*="gap: 64px"]{gap:32px !important}
+  [style*="padding: 36px; border-radius: 4px"]{padding:22px !important}
+  [style*="padding: 32px; display: flex"],[style*="border-radius: 4px; padding: 32px"]{padding:22px !important}
+  main a[class^="btn"],main a.chip{min-height:48px;display:inline-flex;align-items:center;justify-content:center}
+  footer{padding-top:48px !important}
+  footer nav a,footer .darklink{padding:5px 0;display:inline-block}
+  footer [style*="gap: 48px"]{gap:28px !important}
+  .crumb{flex-wrap:wrap}
+  input,select,textarea{font-size:16px !important}
+}
+@media (prefers-reduced-motion: reduce){header nav.nav{transition:none !important}}
 footer a:hover,footer a:focus-visible,footer .darklink:hover{color:#172F1B !important;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
 .tel-link:hover{text-decoration:underline !important;text-underline-offset:3px}
 @media (max-width: 760px){
   .topbar > div{justify-content:center !important;padding:8px 20px !important}
-  header nav.nav{flex-wrap:nowrap !important;overflow-x:auto;width:100%;gap:18px !important;padding-bottom:6px;white-space:nowrap}
   section{padding-left:20px !important;padding-right:20px !important}
   h1{font-size:40px !important}
   h2{font-size:34px !important}
@@ -87,7 +126,8 @@ footer a:hover,footer a:focus-visible,footer .darklink:hover{color:#172F1B !impo
     <a href="/" aria-label="משק רם – לעמוד הבית" style="display: block">
       <span class="mk m-logo cream" role="img" aria-label="משק רם" style="display: block; width: 150px; height: 48px"></span>
     </a>
-    <nav class="nav" aria-label="ניווט ראשי" style="display: flex; gap: 26px; flex-wrap: wrap; font-size: 16px">
+    <button type="button" class="menu-btn" aria-expanded="false" aria-controls="main-nav" aria-label="פתיחת התפריט"><svg class="i-open" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg><svg class="i-close" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <nav class="nav" id="main-nav" aria-label="ניווט ראשי" style="display: flex; gap: 26px; flex-wrap: wrap; font-size: 16px">
       <a href="/">עמוד הבית</a>
       <a href="/about/">אודות</a>
       <a href="/our-story/">סיפור החנות</a>
@@ -141,5 +181,14 @@ footer a:hover,footer a:focus-visible,footer .darklink:hover{color:#172F1B !impo
 </footer>
 </div>
 <script src="/assets/forms.js" defer></script>
+<script>
+(function(){var h=document.querySelector('header'),b=h&&h.querySelector('.menu-btn'),n=h&&h.querySelector('nav.nav');if(!b||!n)return;
+function set(o){h.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false');b.setAttribute('aria-label',o?'סגירת התפריט':'פתיחת התפריט')}
+b.addEventListener('click',function(){set(!h.classList.contains('open'))});
+n.addEventListener('click',function(e){if(e.target.closest('a'))set(false)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&h.classList.contains('open')){set(false);b.focus()}});
+document.addEventListener('click',function(e){if(h.classList.contains('open')&&!h.contains(e.target))set(false)});
+matchMedia('(min-width: 901px)').addEventListener('change',function(m){if(m.matches)set(false)});})();
+</script>
 </body>
 </html>
