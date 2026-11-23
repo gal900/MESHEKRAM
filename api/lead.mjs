@@ -4,6 +4,7 @@
 
 // ---- Per-site settings (the only part that changes between sites) ----
 const YC_MYPRICE_URL = 'https://www.myprice.co.il/myprice/ajax/affiliate_service_submit.ashx';
+const YC_MYPRICE_FORM_PAGE = 'https://www.myprice.co.il/myprice/affiliate_service.aspx?tid=274&fk_service_id=10310&fk_affiliate_id=21126171';
 const YC_MYPRICE_AFFILIATE = '21126171';
 const YC_MYPRICE_SERVICE = '10310';
 const YC_FIELDS = { name: 'txt_form_field_11623', phone: 'txt_form_field_11624', email: 'txt_form_field_11625', msg: 'txt_form_field_11626' };
@@ -116,8 +117,21 @@ export default async function handler(req, res) {
   out.set('fk_dynamic_content_by_profile_id', MYPRICE_STATIC.fk_dynamic_content_by_profile_id);
 
   let answer = '', status = 0;
+  const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0 Safari/537.36';
+  // Open the MyPrice form page first, like a browser would: take its session cookie and fresh hidden fields.
+  let cookie = '';
   try {
-    const r = await fetch(YC_MYPRICE_URL, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'X-Requested-With': 'XMLHttpRequest' }, body: out.toString(), signal: AbortSignal.timeout(20000) });
+    const pg = await fetch(YC_MYPRICE_FORM_PAGE, { headers: { 'User-Agent': UA, 'Accept-Language': 'he-IL,he;q=0.9' }, signal: AbortSignal.timeout(10000) });
+    const set = typeof pg.headers.getSetCookie === 'function' ? pg.headers.getSetCookie() : [pg.headers.get('set-cookie') || ''];
+    cookie = set.filter(Boolean).map((c) => c.split(';')[0]).join('; ');
+    const html = await pg.text();
+    for (const n of ['__VIEWSTATE', '__VIEWSTATEGENERATOR', '__EVENTVALIDATION']) {
+      const m = html.match(new RegExp('name="' + n + '"[^>]*value="([^"]*)"')) || html.match(new RegExp('id="' + n + '"[^>]*value="([^"]*)"'));
+      if (m) out.set(n, m[1]);
+    }
+  } catch (e) { /* fall back to the static values */ }
+  try {
+    const r = await fetch(YC_MYPRICE_URL, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'X-Requested-With': 'XMLHttpRequest', 'User-Agent': UA, 'Accept': '*/*', 'Accept-Language': 'he-IL,he;q=0.9', 'Origin': 'https://www.myprice.co.il', 'Referer': YC_MYPRICE_FORM_PAGE, ...(cookie ? { Cookie: cookie } : {}) }, body: out.toString(), signal: AbortSignal.timeout(20000) });
     status = r.status; answer = (await r.text()).trim();
   } catch (e) { answer = 'fetch_error: ' + e.name; }
 
@@ -127,6 +141,6 @@ export default async function handler(req, res) {
     console.log(JSON.stringify({ yc_lead_guard: 'sent', at: new Date().toISOString(), ip, source: data.source }));
     return send(res, 200, { ok: true });
   }
-  log('myprice_error:' + status + ':' + answer.slice(0, 60), ip, data);
+  log('myprice_error:' + status + ':' + answer.slice(0, 60) + (cookie ? ':cookie' : ':nocookie'), ip, data);
   return send(res, 502, { ok: false, message: 'הפנייה לא נשלחה בגלל תקלה זמנית. נסו שוב או התקשרו: ' + YC_PHONE_DISPLAY });
 }
