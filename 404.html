@@ -16,11 +16,29 @@
 <meta name="theme-color" content="#172F1B">
 <link rel="icon" href="/favicon.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&amp;family=Gveret+Levin&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800;900&amp;display=swap" rel="stylesheet">
 <style>
 body{margin:0;background:#172F1B}
 a{color:#EBE7D7}a:hover{color:#CDB787}
-.craft{background-image:url(/assets/craft.jpg);background-size:cover;background-position:center}
+@font-face{font-family:'MeshekRam';src:url(/assets/MeshekRam-Regular.woff) format('woff'),url(/assets/MeshekRam-Regular.otf) format('opentype');font-display:swap}
+.craft{background-image:url(/assets/craft.jpg);background-size:560px auto;background-repeat:repeat;background-position:top left}
+.ribbon{overflow:hidden;direction:ltr;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.ribbon-track{display:flex;width:max-content;animation:ribbon-right 38s linear infinite}
+.ribbon:hover .ribbon-track{animation-play-state:paused}
+.ribbon-set{display:flex;align-items:center;gap:56px;padding-inline-end:56px}
+.ribbon-item{display:flex;align-items:center;gap:12px;direction:rtl;white-space:nowrap;font-size:19px;font-weight:700;color:#172F1B}
+.ribbon-ic{flex:none;background:#172F1B}
+@keyframes ribbon-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@media (prefers-reduced-motion:reduce){.ribbon-track{animation:none;flex-wrap:wrap;width:auto;justify-content:center}.ribbon-set+.ribbon-set{display:none}.ribbon{-webkit-mask-image:none;mask-image:none}}
+.card{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;aspect-ratio:3/4;padding:9% 8% 7%;box-sizing:border-box;border-radius:3px;text-decoration:none;color:#172F1B;background-color:#CDB787;background-blend-mode:multiply;box-shadow:0 2px 3px rgba(23,47,27,.18),0 10px 22px rgba(23,47,27,.12);transition:transform 250ms cubic-bezier(0.23,1,0.32,1),box-shadow 250ms ease}
+.card-logo{display:block;width:62%;aspect-ratio:3.1/1;background:#172F1B}
+.card-name{margin-top:6px;font-family:'MeshekRam','Heebo',sans-serif;font-size:clamp(24px,2.1vw,32px);line-height:1.1;color:#172F1B}
+.card-ic{display:block;width:52%;flex:1 1 auto;margin:6% 0;background:#638C55}
+.card-tag{display:block;width:78%;aspect-ratio:9/1;background:#EBE7D7}
+@media (hover:hover) and (pointer:fine){.card:hover{transform:translateY(-4px);box-shadow:0 4px 6px rgba(23,47,27,.18),0 18px 30px rgba(23,47,27,.16)}}
+.card:active{transform:scale(0.98)}
+@media (max-width:1100px){.dep-grid{grid-template-columns:repeat(3,minmax(0,1fr)) !important}.dep-wide{grid-column:span 3 !important;aspect-ratio:2/1}}
+@media (max-width:760px){.dep-grid{grid-template-columns:repeat(2,minmax(0,1fr)) !important;gap:12px !important}.dep-wide{grid-column:span 2 !important}.card-name{font-size:22px}}
 .mk{-webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center}
 .cream{background:#EBE7D7}.forest{background:#638C55}.deep{background:#172F1B}
 .m-logo{-webkit-mask-image:url(/assets/logo.png);mask-image:url(/assets/logo.png)}
